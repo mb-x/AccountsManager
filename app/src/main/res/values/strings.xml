@@ -21,4 +21,5 @@
         <item>Venus</item>
 
     </string-array>
+    <string name="title_activity_add_account">AddAccountActivity</string>
 </resources>

@@ -1,5 +1,6 @@
 package com.devgrafix.accountsmanager;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -13,7 +14,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
+
+import java.sql.SQLException;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -28,13 +31,14 @@ public class MainActivity extends AppCompatActivity
         //********************** Initializing Toolbar and setting it as the actionbar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         // ***************** Initializing FloatingActionButton
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent intent = new Intent(MainActivity.this, AddAccountActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -47,12 +51,27 @@ public class MainActivity extends AppCompatActivity
         //calling sync state is necessay or else your hamburger icon wont show up
         toggle.syncState();
 
+        try {
+            setUpNavigationView();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    protected void setUpNavigationView() throws SQLException {
         //Initializing NavigationView
         navigationView = (NavigationView) findViewById(R.id.nav_view);
+        Menu menu = navigationView.getMenu();
+        FolderManager folderManager = new FolderManager(this);
+        folderManager.open();
+        List<Folder> categories = folderManager.findAll();
+        for(Folder folder : categories){
+            menu.add(0, (int) folder.getId(), folder.getOrder(), folder.getName());
+        }
+        folderManager.close();
+        //menu.add(0,99, 1,"Test").setIcon(R.drawable.ic_menu_slideshow);
         //Setting Navigation View Item Selected Listener to handle the item click of the navigation menu
         navigationView.setNavigationItemSelectedListener(this);
     }
-
     @Override
     public void onBackPressed() {
         //DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -98,8 +117,9 @@ public class MainActivity extends AppCompatActivity
 */
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        setFragment((long)id);
         //Check to see which item was being clicked and perform appropriate action
-        if (id == R.id.nav_camera) {
+        /*if (id == R.id.nav_camera) {
             setFragment("Camera");
             //return true;
         } else if (id == R.id.nav_gallery) {
@@ -116,20 +136,25 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_send) {
             setFragment("nav_send");
 
-        }
+        }else if (id == 99) {
+            setFragment("my personnal test");
+
+        }*/
 
         //DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
 
-    protected void setFragment(String msg){
+    protected void setFragment(long folder_id){
         ListFragment fragment = new ListFragment();
         Bundle args = new Bundle();
-        args.putString(ListFragment.MSG_KEY, msg);
+        args.putLong(ListFragment.FOLDER_KEY, folder_id);
         fragment.setArguments(args);
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.frame_container,fragment);
         fragmentTransaction.commit();
     }
+
+
 }
