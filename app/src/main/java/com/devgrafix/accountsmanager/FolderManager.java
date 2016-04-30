@@ -3,6 +3,7 @@ package com.devgrafix.accountsmanager;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteOpenHelper;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -60,19 +61,35 @@ public class FolderManager extends EntityManager {
     /**
      * @param entity le métier à ajouter à la base
      */
-    public long add(Folder entity) {
+    public long add(Folder entity){
         //Log.e("Folder Add", entity.getName()+" -- "+entity.getOrder());
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(NAME, entity.getName());
-        contentValues.put(RANK, entity.getOrder());
-        long insertId = database.insert(TABLE_NAME, null, contentValues);
+        long insertId = 0;
+        try {
+            open();
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(NAME, entity.getName());
+            contentValues.put(RANK, entity.getOrder());
+            insertId = database.insert(TABLE_NAME, null, contentValues);
+        }catch (SQLException e){
+            e.printStackTrace();
+        }finally {
+            close();
+        }
+
         return insertId;
     }
 
     public void delete(Folder folder) {
         long id = folder.getId();
+        try {
+            open();
+            database.delete(TABLE_NAME, ID + " = " + id, null);
+        }catch (SQLException e){
+            e.printStackTrace();
+        }finally {
+            close();
+        }
 
-        database.delete(TABLE_NAME, ID + " = " + id, null);
     }
     /**
      * @param entity le métier modifié
@@ -83,11 +100,20 @@ public class FolderManager extends EntityManager {
      * @param id l'identifiant du métier à récupérer
      */
     public Folder findById(long id) {
-        Cursor cursor =  database.query(TABLE_NAME, allColumns, ID + " = " + id, null,
-                null, null, null);
-        cursor.moveToFirst();
-        Folder folder = cursorToEntity(cursor);
-        cursor.close();
+        Folder folder=null;
+        try {
+            open();
+            Cursor cursor =  database.query(TABLE_NAME, allColumns, ID + " = " + id, null,
+                    null, null, null);
+            cursor.moveToFirst();
+            folder = cursorToEntity(cursor);
+            cursor.close();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }finally {
+            close();
+        }
+
         return folder;
     }
 

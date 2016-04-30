@@ -34,73 +34,162 @@
         tools:context="com.devgrafix.accountsmanager.AddAccountActivity"
         tools:showIn="@layout/activity_add_account">
 
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_account_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <EditText
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/fld_account_name"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:autoText="true"
+                android:hint="Account Name"
+                android:textStyle="bold" />
+        </android.support.design.widget.TextInputLayout>
 
-        <EditText
-            android:layout_width="fill_parent"
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_login"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/fld_account_name"
-            android:layout_alignParentTop="true"
+            android:layout_below="@+id/input_layout_account_name"
+            android:layout_alignRight="@+id/input_layout_account_name"
+            android:layout_alignEnd="@+id/input_layout_account_name"
+            >
+            <EditText
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/fld_login"
+                android:hint="Login"
+                />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/input_layout_login"
             android:layout_centerHorizontal="true"
-            android:text="Account Name" />
+            >
+            <EditText
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/fld_email"
+                android:hint="Email"
+                android:inputType="textWebEmailAddress" />
 
-        <EditText
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/fld_login"
-            android:text="Login"
-            android:layout_below="@+id/fld_account_name"
-            android:layout_alignRight="@+id/fld_account_name"
-            android:layout_alignEnd="@+id/fld_account_name" />
+        </android.support.design.widget.TextInputLayout>
 
-        <EditText
-            android:layout_width="fill_parent"
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_password"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/fld_email"
-            android:text="Email"
-            android:layout_below="@+id/fld_login"
-            android:layout_centerHorizontal="true" />
+            android:layout_below="@+id/input_layout_email"
+            android:layout_centerHorizontal="true"
+            >
+            <EditText
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/fld_password"
+                android:hint="Password"
+                android:inputType="textPassword" />
 
-        <EditText
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/fld_password"
-            android:text="Password"
-            android:layout_below="@+id/fld_email"
-            android:layout_centerHorizontal="true" />
+
+        </android.support.design.widget.TextInputLayout>
 
         <EditText
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/fld_repeat_password"
-            android:text="Repeat Password"
-            android:layout_below="@+id/fld_password"
-            android:layout_centerHorizontal="true" />
+            android:hint="Repeat Password"
 
-        <EditText
-            android:layout_width="fill_parent"
+            android:layout_below="@+id/input_layout_password"
+            android:layout_centerHorizontal="true"
+            android:inputType="textPassword" />
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_url"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/fld_url"
-            android:text="Url"
             android:layout_below="@+id/fld_repeat_password"
-            android:layout_centerHorizontal="true" />
+            android:layout_centerHorizontal="true"
+            >
 
-        <Spinner
+            <EditText
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/fld_url"
+                android:hint="Url"
+                android:inputType="textUri" />
+
+        </android.support.design.widget.TextInputLayout>
+
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_folders"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/input_layout_url"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Choose folder"
+                />
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/spinner_folder"
+
+                android:spinnerMode="dropdown" />
+            <Button
+                android:id="@+id/btn_add_folder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Add"
+                />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_comment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/input_layout_folders"
+            android:layout_centerHorizontal="true"
+            >
+
+            <EditText
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:ems="10"
+                android:id="@+id/fld_comment"
+
+                android:hint="Comment" />
+
+        </android.support.design.widget.TextInputLayout>
+        <CheckBox
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Display In home"
+            android:checked="false"
+            android:id="@+id/chk_in_home"
+            android:layout_below="@+id/input_layout_comment"
+            />
+        <Button
+            style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/spinner_folder"
-            android:layout_below="@+id/fld_url"
+            android:text="Submit"
+            android:id="@+id/btn_submit_add_entry"
+            android:layout_below="@+id/chk_in_home"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
 
-        <EditText
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textMultiLine"
-            android:ems="10"
-            android:id="@+id/fld_comment"
-            android:layout_below="@+id/spinner_folder"
-            android:layout_centerHorizontal="true"
-            android:text="Comment" />
 
     </RelativeLayout>
 
