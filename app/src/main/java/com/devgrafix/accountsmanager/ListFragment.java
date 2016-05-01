@@ -44,8 +44,7 @@ public class ListFragment extends android.support.v4.app.ListFragment
     protected void initViews(){
         txtShow =(TextView) view.findViewById(R.id.txt_show);
         txtShow.setText(folder.getName());
-        Button btnAdd = (Button)view.findViewById(R.id.btn_add);
-        btnAdd.setOnClickListener(this);
+
     }
 
     protected void doHome(){
@@ -68,7 +67,7 @@ public class ListFragment extends android.support.v4.app.ListFragment
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        accounts = accountManager.findAll();
+        accounts = accountManager.findByFolder(folder_id);
         ArrayAdapter<Account> adapter = new ArrayAdapter<Account>(getContext(), android.R.layout.simple_list_item_1, accounts);
         setListAdapter(adapter);
 
@@ -101,7 +100,7 @@ public class ListFragment extends android.support.v4.app.ListFragment
         ArrayAdapter<Folder> adapter = (ArrayAdapter<Folder>) getListAdapter();
         Folder folder = null;
         switch (view.getId()) {
-            case R.id.btn_add:
+            /*case R.id.btn_add:
 
                 String[] comments = new String[] { "Cool", "Very nice", "Hate it" };
                 int nextInt = new Random().nextInt(3);
@@ -114,7 +113,7 @@ public class ListFragment extends android.support.v4.app.ListFragment
                     folder = folderManager.findById(id);
                     adapter.add(folder);
 
-                break;
+                break;*/
             /*case R.id.delete:
                 if (getListAdapter().getCount() > 0) {
                     comment = (Comment) getListAdapter().getItem(0);

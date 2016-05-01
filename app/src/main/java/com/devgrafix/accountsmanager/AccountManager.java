@@ -72,6 +72,30 @@ public class AccountManager extends EntityManager {
         return accounts;
     }
 
+    public List<Account> findByFolder(long folder_id) {
+
+        List<Account> accounts = new ArrayList<Account>();
+        try{
+            this.open();
+            Cursor cursor = database.query(TABLE_NAME,
+                    allColumns, FOLDER+" = " + folder_id, null, null, null, null);
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                Account account = cursorToEntity(cursor);
+                accounts.add(account);
+                cursor.moveToNext();
+            }
+            // assurez-vous de la fermeture du curseur
+            cursor.close();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }finally {
+            this.close();
+        }
+
+        return accounts;
+    }
+
     /**
      * @param entity le métier à ajouter à la base
      */

@@ -1,6 +1,8 @@
 package com.devgrafix.accountsmanager;
 
 import com.devgrafix.accountsmanager.Account;
+
+import android.app.ActionBar;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -10,6 +12,9 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -107,7 +112,7 @@ public class AddAccountActivity extends AppCompatActivity
                 .setPositiveButton("OK",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog,int id) {
-                                // get user input and set it to result
+                                // get user input, create folder entry and reload spinner
                                 // edit text
                                 createFolderAndReloadSpinner(userInput.getText().toString());
                             }
@@ -149,6 +154,10 @@ public class AddAccountActivity extends AppCompatActivity
         folderManager.add(folder);
         loadSpinnerFolderData();
     }
+
+    /**
+     * load folders from sqlite database and fill the spinner view
+     */
     protected void loadSpinnerFolderData(){
 
         List<Folder> folderList = folderManager.findAll();
@@ -158,13 +167,32 @@ public class AddAccountActivity extends AppCompatActivity
     }
 
     @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position,long id) {
-        // On selecting a spinner item
-        selectedFolder = (Folder)parent.getItemAtPosition(position);
-        // Showing selected spinner item
-        Toast.makeText(parent.getContext(), "You selected: " + selectedFolder.getName(),
-                Toast.LENGTH_LONG).show();
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.add_account_menu, menu);
 
+        return super.onCreateOptionsMenu(menu);
+    }
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Take appropriate action for each action item click
+        switch (item.getItemId()) {
+            case R.id.action_save_account:
+                // save account
+                submitForm();
+                return true;
+            case R.id.action_cancel_account:
+                // TODO
+                // close activity
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position,long id) {
+        // On selecting a spinner item, set selected folder object
+        selectedFolder = (Folder)parent.getItemAtPosition(position);
     }
 
     @Override
