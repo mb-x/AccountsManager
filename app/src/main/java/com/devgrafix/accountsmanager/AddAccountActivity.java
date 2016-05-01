@@ -1,5 +1,6 @@
 package com.devgrafix.accountsmanager;
 
+import com.devgrafix.accountsmanager.Account;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -25,7 +26,10 @@ public class AddAccountActivity extends AppCompatActivity
             implements AdapterView.OnItemSelectedListener {
 
     final Context contextAddAccount = this;
+
     protected FolderManager folderManager;
+    protected AccountManager accountManager;
+
     protected Folder selectedFolder;
     protected Spinner spinnerFolder;
     protected CheckBox chkInHome;
@@ -42,6 +46,7 @@ public class AddAccountActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         folderManager = new FolderManager(contextAddAccount);
+        accountManager = new AccountManager(contextAddAccount);
 
         initViews();
         loadSpinnerFolderData();
@@ -124,6 +129,16 @@ public class AddAccountActivity extends AppCompatActivity
     protected void submitForm(){
         Toast.makeText(contextAddAccount, "Submit " ,
                 Toast.LENGTH_LONG).show();
+        Account account = new Account();
+        account.setName(fldAccountName.getText().toString());
+        account.setLogin(fldLogin.getText().toString());
+        account.setEmail(fldEmail.getText().toString());
+        account.setPassword(fldPassword.getText().toString());
+        account.setUrl(fldUrl.getText().toString());
+        account.setComment(fldComment.getText().toString());
+        account.setIs_in_home(chkInHome.isChecked());
+        account.setFolder(selectedFolder);
+        accountManager.add(account);
 
     }
 

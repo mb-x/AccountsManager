@@ -51,23 +51,21 @@ public class MainActivity extends AppCompatActivity
         //calling sync state is necessay or else your hamburger icon wont show up
         toggle.syncState();
 
-        try {
-            setUpNavigationView();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+
+        setUpNavigationView();
+
     }
-    protected void setUpNavigationView() throws SQLException {
+    protected void setUpNavigationView(){
         //Initializing NavigationView
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         Menu menu = navigationView.getMenu();
         FolderManager folderManager = new FolderManager(this);
-        folderManager.open();
+
         List<Folder> categories = folderManager.findAll();
         for(Folder folder : categories){
             menu.add(0, (int) folder.getId(), folder.getOrder(), folder.getName());
         }
-        folderManager.close();
+
         //menu.add(0,99, 1,"Test").setIcon(R.drawable.ic_menu_slideshow);
         //Setting Navigation View Item Selected Listener to handle the item click of the navigation menu
         navigationView.setNavigationItemSelectedListener(this);

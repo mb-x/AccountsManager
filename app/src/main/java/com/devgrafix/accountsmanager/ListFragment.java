@@ -30,8 +30,9 @@ public class ListFragment extends android.support.v4.app.ListFragment
     private boolean is_home;
 
     protected FolderManager folderManager;
+    protected AccountManager accountManager;
     protected Folder folder;
-
+    protected List<Account> accounts;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -42,7 +43,7 @@ public class ListFragment extends android.support.v4.app.ListFragment
 
     protected void initViews(){
         txtShow =(TextView) view.findViewById(R.id.txt_show);
-
+        txtShow.setText(folder.getName());
         Button btnAdd = (Button)view.findViewById(R.id.btn_add);
         btnAdd.setOnClickListener(this);
     }
@@ -59,6 +60,7 @@ public class ListFragment extends android.support.v4.app.ListFragment
         folder_id =  (getArguments() != null)? getArguments().getLong(FOLDER_KEY): 0;
         Toast.makeText(getActivity(), "Param =" + folder_id, Toast.LENGTH_SHORT).show();
         folderManager = new FolderManager(getContext());
+        accountManager = new AccountManager(getContext());
         folder = folderManager.findById(folder_id);
     }
 
@@ -66,16 +68,10 @@ public class ListFragment extends android.support.v4.app.ListFragment
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        try {
-            folderManager.open();
-            List<Folder> values = folderManager.findAll();
-            ArrayAdapter<Folder> adapter = new ArrayAdapter<Folder>(getContext(), android.R.layout.simple_list_item_1, values);
-            setListAdapter(adapter);
+        accounts = accountManager.findAll();
+        ArrayAdapter<Account> adapter = new ArrayAdapter<Account>(getContext(), android.R.layout.simple_list_item_1, accounts);
+        setListAdapter(adapter);
 
-        } catch (SQLException e) {
-            folderManager.close();
-            e.printStackTrace();
-        }
         /*ArrayAdapter adapter = ArrayAdapter.createFromResource(getActivity(), R.array.Planets1, android.R.layout.simple_list_item_1);
         setListAdapter(adapter);*/
         getListView().setOnItemClickListener(this);
