@@ -20,5 +20,10 @@
         android:layout_height="match_parent">
 
 
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/accountRecycler"
+            android:layout_gravity="left|top" />
     </FrameLayout>
 </RelativeLayout>

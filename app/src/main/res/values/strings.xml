@@ -27,4 +27,6 @@
 
     </string-array>
     <string name="title_activity_add_account">AddAccountActivity</string>
+    <string name="textEmail">Email : </string>
+    <string name="textPassword">Password : </string>
 </resources>

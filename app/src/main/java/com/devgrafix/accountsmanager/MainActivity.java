@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -19,8 +21,10 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener,AccountAdapter.AccountClicked {
 
+    private RecyclerView accountRecycler;
+    private AccountAdapter accountAdapter;
     private Toolbar toolbar;
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
@@ -28,6 +32,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         //********************** Initializing Toolbar and setting it as the actionbar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -51,7 +56,7 @@ public class MainActivity extends AppCompatActivity
         //calling sync state is necessay or else your hamburger icon wont show up
         toggle.syncState();
 
-
+        initView();
         setUpNavigationView();
 
     }
@@ -115,7 +120,8 @@ public class MainActivity extends AppCompatActivity
 */
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-        setFragment((long)id);
+        setUpAccountAdapter(id);
+        //setFragment((long)id);
         //Check to see which item was being clicked and perform appropriate action
         /*if (id == R.id.nav_camera) {
             setFragment("Camera");
@@ -154,5 +160,25 @@ public class MainActivity extends AppCompatActivity
         fragmentTransaction.commit();
     }
 
+    public void initView(){
+        accountRecycler = (RecyclerView)findViewById(R.id.accountRecycler);
+    }
 
+    public void setUpAccountAdapter(long id){
+        accountAdapter = new AccountAdapter(getApplicationContext(),id,this);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        accountRecycler.setLayoutManager(layoutManager);
+        accountRecycler.setAdapter(accountAdapter);
+    }
+
+    @Override
+    public void onClicked(final int oldPosition) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                accountAdapter.notifyItemChanged(oldPosition);
+            }
+        });
+    }
 }
