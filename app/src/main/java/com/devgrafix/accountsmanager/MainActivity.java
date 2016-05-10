@@ -173,10 +173,11 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onClicked(final int oldPosition) {
+    public void onClicked(final int position, final int oldPosition) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                accountAdapter.notifyItemChanged(position);
                 accountAdapter.notifyItemChanged(oldPosition);
             }
         });

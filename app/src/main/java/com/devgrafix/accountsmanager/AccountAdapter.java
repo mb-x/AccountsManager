@@ -23,7 +23,7 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.AccountV
     private int oldPositionClicked;
 
     public interface AccountClicked{
-        public void onClicked(int oldPosition);
+        void onClicked(int position, int oldPosition);
     }
 
     public AccountAdapter(Context context,long folderId,AccountClicked accountClicked){
@@ -38,7 +38,7 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.AccountV
     }
 
     @Override
-    public void onBindViewHolder(final AccountViewHolder holder, final int position) {
+    public void onBindViewHolder(final AccountViewHolder holder, int position) {
         Account currentAccount = listAccounts.get(position);
 
         holder.getTextAccount().setText(currentAccount.getName());
@@ -56,8 +56,8 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.AccountV
             @Override
             public void onClick(View v) {
                 oldPositionClicked = positionClicked;
-                positionClicked = position;
-                accountClicked.onClicked(oldPositionClicked);
+                positionClicked = holder.getAdapterPosition();
+                accountClicked.onClicked(holder.getAdapterPosition(), oldPositionClicked);
             }
         });
 
