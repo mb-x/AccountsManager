@@ -16,6 +16,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -162,6 +163,7 @@ public class MainActivity extends AppCompatActivity
 
     public void initView(){
         accountRecycler = (RecyclerView)findViewById(R.id.accountRecycler);
+        registerForContextMenu(accountRecycler);
     }
 
     public void setUpAccountAdapter(long id){
@@ -181,5 +183,19 @@ public class MainActivity extends AppCompatActivity
                 accountAdapter.notifyItemChanged(oldPosition);
             }
         });
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        int position = accountAdapter.getPositionClicked();
+        switch (item.getItemId()){
+            case 1001:
+                Toast.makeText(getApplicationContext(),"View Account Choosed in this Position "+position,Toast.LENGTH_LONG).show();
+                break;
+            case 1002:
+                Toast.makeText(getApplicationContext(),"Delete Account Choosed in this Position "+position,Toast.LENGTH_LONG).show();
+                break;
+        }
+        return super.onContextItemSelected(item);
     }
 }
