@@ -1,17 +1,39 @@
 package com.devgrafix.accountsmanager.model;
 
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
+import com.activeandroid.query.Select;
+
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by sbxramses on 30/04/16.
  */
-public class Account {
+@Table(name = "tbl_account")
+public class Account extends Model {
 
     /* Begin Variables */
-    protected long id;
-    protected String name , url, login, email , password, comment;
+    @Column(name = "name")
+    protected String name ;
+    @Column(name = "url")
+    protected String url;
+    @Column(name = "login")
+    protected String login;
+    @Column(name = "email")
+    protected String email;
+    @Column(name = "password")
+    protected String password;
+    @Column(name = "comment")
+    protected String comment;
+    @Column(name = "is_in_home")
     protected Boolean is_in_home;
-    protected Date created_at, updated_at;
+    @Column(name = "created_at")
+    protected Date created_at;
+    @Column(name = "updated_at")
+    protected Date updated_at;
+    @Column(name = "folder")
     protected Folder folder;
     /* End Variables */
 
@@ -29,14 +51,6 @@ public class Account {
     @Override
     public String toString() {
         return this.getName();
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -118,4 +132,29 @@ public class Account {
     public void setFolder(Folder folder) {
         this.folder = folder;
     }
+
+
+    /** *****************************
+     * SQLITE METHODES
+     ********************************** */
+    public static List<Account> getAll(){
+        return new Select()
+                .from(Account.class)
+                .orderBy("name ASC")
+                .execute();
+    }
+    public static Account getOneById(long id){
+        return new Select()
+                .from(Account.class)
+                .where("Id = ?", id)
+                .executeSingle();
+    }
+    public static List<Account> findByFolder(long folder_id){
+        return new Select()
+                .from(Account.class)
+                .where("folder = ?", folder_id)
+                .orderBy("name ASC")
+                .execute();
+    }
+
 }

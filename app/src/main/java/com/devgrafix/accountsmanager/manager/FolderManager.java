@@ -120,7 +120,6 @@ public class FolderManager extends EntityManager {
 
     private Folder cursorToEntity(Cursor cursor) {
         Folder folder = new Folder();
-        folder.setId(cursor.getLong(0));
         folder.setName(cursor.getString(1));
         folder.setOrder(cursor.getInt(2));
         return folder;

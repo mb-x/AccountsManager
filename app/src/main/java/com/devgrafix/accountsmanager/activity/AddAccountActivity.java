@@ -32,8 +32,6 @@ public class AddAccountActivity extends AppCompatActivity
 
     final Context contextAddAccount = this;
 
-    protected FolderManager folderManager;
-    protected AccountManager accountManager;
 
     protected Folder selectedFolder;
     protected Spinner spinnerFolder;
@@ -49,9 +47,6 @@ public class AddAccountActivity extends AppCompatActivity
         setContentView(R.layout.activity_add_account);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        folderManager = new FolderManager(contextAddAccount);
-        accountManager = new AccountManager(contextAddAccount);
 
         initViews();
         loadSpinnerFolderData();
@@ -143,7 +138,7 @@ public class AddAccountActivity extends AppCompatActivity
         account.setComment(fldComment.getText().toString());
         account.setIs_in_home(chkInHome.isChecked());
         account.setFolder(selectedFolder);
-        accountManager.add(account);
+        account.save();
 
     }
 
@@ -151,7 +146,7 @@ public class AddAccountActivity extends AppCompatActivity
         Folder folder = new Folder();
         folder.setName(folderName);
         folder.setOrder(1);
-        folderManager.add(folder);
+        folder.save();
         loadSpinnerFolderData();
     }
 
@@ -160,7 +155,7 @@ public class AddAccountActivity extends AppCompatActivity
      */
     protected void loadSpinnerFolderData(){
 
-        List<Folder> folderList = folderManager.findAll();
+        List<Folder> folderList = Folder.getAll();
         ArrayAdapter<Folder> folderArrayAdapter =  new ArrayAdapter<Folder>(this,
                 android.R.layout.simple_spinner_item, folderList);
         spinnerFolder.setAdapter(folderArrayAdapter);

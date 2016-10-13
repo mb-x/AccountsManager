@@ -2,38 +2,32 @@ package com.devgrafix.accountsmanager.model;
 
 import android.database.sqlite.SQLiteDatabase;
 
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
+import com.activeandroid.query.Select;
+
+import java.util.List;
+
 /**
  * Created by sbxramses on 17/04/16.
  */
-public class Folder {
+@Table(name = "tbl_folder")
+public class Folder extends Model {
 
-    protected long id;
-
+    @Column(name = "folder_name")
     protected String name;
-
+    @Column(name = "folder_order")
     protected int order;
-
-
-
 
     public Folder(){
 
     }
 
-    public Folder(int id, String name, int order) {
-        this.id = id;
+    public Folder(String name, int order) {
         this.name = name;
         this.order = order;
     }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
     public String getName() {
         return this.name;
     }
@@ -52,5 +46,21 @@ public class Folder {
 
     public String toString() {
         return name;
+    }
+
+    /** *****************************
+     * SQLITE METHODES
+     ********************************** */
+    public static List<Folder> getAll(){
+        return new Select()
+                .from(Folder.class)
+                .orderBy("folder_name ASC")
+                .execute();
+    }
+    public static Folder getOneById(long id){
+        return new Select()
+                .from(Folder.class)
+                .where("Id = ?", id)
+                .executeSingle();
     }
 }

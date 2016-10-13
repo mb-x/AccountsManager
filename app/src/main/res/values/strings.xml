@@ -11,7 +11,14 @@
     <string name="action_save">Save</string>
 
     <string name="action_cancel">Cancel</string>
+    <string name="action_add">Add</string>
+    <string name="action_edit">Edit</string>
+    <string name="action_delete">Delete</string>
 
+    <string-array name="menu_edit_delete_items">
+        <item>@string/action_edit</item>
+        <item>@string/action_delete</item>
+    </string-array>
     <string-array name="Planets1">
 
         <item>Mars</item>
@@ -27,4 +34,7 @@
 
     </string-array>
     <string name="title_activity_add_account">AddAccountActivity</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

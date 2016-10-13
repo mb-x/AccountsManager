@@ -168,7 +168,7 @@ public class AccountManager extends EntityManager {
 
     private Account cursorToEntity(Cursor c) {
         Account account = new Account();
-        account.setId(c.getLong(c.getColumnIndex(ID)));
+
         account.setName(c.getString(c.getColumnIndex(NAME)));
         account.setLogin(c.getString(c.getColumnIndex(LOGIN)));
         account.setEmail(c.getString(c.getColumnIndex(EMAIL)));

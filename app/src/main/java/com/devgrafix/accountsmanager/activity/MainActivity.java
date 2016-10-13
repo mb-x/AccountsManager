@@ -14,9 +14,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.devgrafix.accountsmanager.Helper;
+import com.devgrafix.accountsmanager.fragment.AccountAddOrEditFragment;
 import com.devgrafix.accountsmanager.model.Folder;
-import com.devgrafix.accountsmanager.manager.FolderManager;
-import com.devgrafix.accountsmanager.fragment.ListFragment;
+import com.devgrafix.accountsmanager.fragment.AccountsListFragment;
 import com.devgrafix.accountsmanager.R;
 
 import java.util.List;
@@ -40,8 +41,7 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, AddAccountActivity.class);
-                startActivity(intent);
+                Helper.switchToFragment(getSupportFragmentManager(), AccountAddOrEditFragment.newInstance(0));
             }
         });
 
@@ -62,11 +62,10 @@ public class MainActivity extends AppCompatActivity
         //Initializing NavigationView
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         Menu menu = navigationView.getMenu();
-        FolderManager folderManager = new FolderManager(this);
 
-        List<Folder> categories = folderManager.findAll();
+        List<Folder> categories = Folder.getAll();
         for(Folder folder : categories){
-            menu.add(0, (int) folder.getId(), folder.getOrder(), folder.getName());
+            menu.add(0,  folder.getId().intValue(), folder.getOrder(), folder.getName());
         }
 
         //menu.add(0,99, 1,"Test").setIcon(R.drawable.ic_menu_slideshow);
@@ -118,7 +117,8 @@ public class MainActivity extends AppCompatActivity
 */
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-        setFragment((long)id);
+        Helper.switchToFragment(getSupportFragmentManager() ,AccountsListFragment.newInstance((long)id));
+
         //Check to see which item was being clicked and perform appropriate action
         /*if (id == R.id.nav_camera) {
             setFragment("Camera");
@@ -146,16 +146,5 @@ public class MainActivity extends AppCompatActivity
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
-
-    protected void setFragment(long folder_id){
-        ListFragment fragment = new ListFragment();
-        Bundle args = new Bundle();
-        args.putLong(ListFragment.FOLDER_KEY, folder_id);
-        fragment.setArguments(args);
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.frame_container,fragment);
-        fragmentTransaction.commit();
-    }
-
 
 }
