@@ -1,4 +1,4 @@
-package com.devgrafix.accountsmanager;
+package com.devgrafix.accountsmanager.manager;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

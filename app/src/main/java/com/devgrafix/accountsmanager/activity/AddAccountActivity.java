@@ -1,13 +1,14 @@
-package com.devgrafix.accountsmanager;
+package com.devgrafix.accountsmanager.activity;
 
-import com.devgrafix.accountsmanager.Account;
+import com.devgrafix.accountsmanager.model.Account;
+import com.devgrafix.accountsmanager.manager.AccountManager;
+import com.devgrafix.accountsmanager.model.Folder;
+import com.devgrafix.accountsmanager.manager.FolderManager;
+import com.devgrafix.accountsmanager.R;
 
-import android.app.ActionBar;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -22,7 +23,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;

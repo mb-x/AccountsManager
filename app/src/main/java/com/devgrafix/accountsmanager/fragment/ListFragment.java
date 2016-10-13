@@ -1,4 +1,4 @@
-package com.devgrafix.accountsmanager;
+package com.devgrafix.accountsmanager.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,13 +8,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.sql.SQLException;
+import com.devgrafix.accountsmanager.model.Account;
+import com.devgrafix.accountsmanager.manager.AccountManager;
+import com.devgrafix.accountsmanager.model.Folder;
+import com.devgrafix.accountsmanager.manager.FolderManager;
+import com.devgrafix.accountsmanager.R;
+
 import java.util.List;
-import java.util.Random;
 
 /**
  * Created by sbxramses on 17/04/16.

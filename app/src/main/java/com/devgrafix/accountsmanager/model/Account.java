@@ -1,4 +1,4 @@
-package com.devgrafix.accountsmanager;
+package com.devgrafix.accountsmanager.model;
 
 import java.util.Date;
 

@@ -1,9 +1,8 @@
-package com.devgrafix.accountsmanager;
+package com.devgrafix.accountsmanager.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -15,7 +14,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import java.sql.SQLException;
+import com.devgrafix.accountsmanager.model.Folder;
+import com.devgrafix.accountsmanager.manager.FolderManager;
+import com.devgrafix.accountsmanager.fragment.ListFragment;
+import com.devgrafix.accountsmanager.R;
+
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity

@@ -1,8 +1,11 @@
-package com.devgrafix.accountsmanager;
+package com.devgrafix.accountsmanager.manager;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+
+import com.devgrafix.accountsmanager.model.Account;
+import com.devgrafix.accountsmanager.model.Folder;
 
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
