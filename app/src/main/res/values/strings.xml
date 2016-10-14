@@ -15,6 +15,13 @@
     <string name="action_edit">Edit</string>
     <string name="action_delete">Delete</string>
 
+    <!-- Error messages for account validation -->
+    <string name="error_account_name">The account name should not be empty !</string>
+    <string name="error_account_login">The account login should not be empty !</string>
+    <string name="error_account_email">This value is not a valid email !</string>
+    <string name="error_account_password_null">The account password should not be empty !</string>
+    <string name="error_account_password_matche">Repeated password does not match !</string>
+
     <string-array name="menu_edit_delete_items">
         <item>@string/action_edit</item>
         <item>@string/action_delete</item>

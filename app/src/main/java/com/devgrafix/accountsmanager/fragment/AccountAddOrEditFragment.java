@@ -28,7 +28,6 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link AccountAddOrEditFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
  * Use the {@link AccountAddOrEditFragment#newInstance} factory method to
  * create an instance of this fragment.
@@ -39,19 +38,19 @@ public class AccountAddOrEditFragment extends Fragment implements AdapterView.On
     private static final String ARG_ACCOUNT_ID = "ARG_ACCOUNT_ID ";
 
     // TODO: Rename and change types of parameters
-    private Long account_id;
+    private Long account_id = null;
 
     protected View rootView;
-    protected Folder selectedFolder;
+    protected Folder selectedFolder = null;
     protected Spinner spinnerFolder;
     protected CheckBox chkInHome;
 
     protected EditText fldAccountName,
             fldLogin, fldEmail, fldPassword, fldRepeatPassword, fldUrl, fldComment
             ;
+    protected Account account = null;
     protected Button btnSubmit, btnAddFolder ;
-
-    private OnFragmentInteractionListener mListener;
+    protected ArrayAdapter<Folder> folderSpinnerAdapter;
 
     public AccountAddOrEditFragment() {
         // Required empty public constructor
@@ -61,14 +60,13 @@ public class AccountAddOrEditFragment extends Fragment implements AdapterView.On
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
      * @return A new instance of fragment AccountAddOrEditFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static AccountAddOrEditFragment newInstance(long param1) {
+    public static AccountAddOrEditFragment newInstance(long param_account_id) {
         AccountAddOrEditFragment fragment = new AccountAddOrEditFragment();
         Bundle args = new Bundle();
-        args.putLong(ARG_ACCOUNT_ID, param1);
+        args.putLong(ARG_ACCOUNT_ID, param_account_id);
         fragment.setArguments(args);
         return fragment;
     }
@@ -78,6 +76,9 @@ public class AccountAddOrEditFragment extends Fragment implements AdapterView.On
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             account_id = getArguments().getLong(ARG_ACCOUNT_ID);
+            if(account_id > 0) {
+                account = Account.getOneById(account_id);
+            }
         }
     }
 
@@ -87,6 +88,9 @@ public class AccountAddOrEditFragment extends Fragment implements AdapterView.On
         rootView = inflater.inflate(R.layout.fragment_account_add_or_edit, container, false);
         initViews();
         loadSpinnerFolderData();
+        if(account != null) {
+            fillComponents(account);
+        }
         return rootView;
     }
     protected void initViews(){
@@ -95,6 +99,7 @@ public class AccountAddOrEditFragment extends Fragment implements AdapterView.On
         spinnerFolder.setOnItemSelectedListener(this);
         /* EditText */
         fldAccountName = (EditText)rootView.findViewById(R.id.fld_account_name);
+
         fldLogin = (EditText)rootView.findViewById(R.id.fld_login);
         fldEmail = (EditText)rootView.findViewById(R.id.fld_email);
         fldPassword = (EditText)rootView.findViewById(R.id.fld_password);
@@ -110,7 +115,16 @@ public class AccountAddOrEditFragment extends Fragment implements AdapterView.On
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                submitForm();
+                if(account_id == null || account_id == 0 || account == null){
+                    account = new Account();
+                }
+                hydrateAccount(account);
+                if(validateAccountObject(account)) {
+                    account.save();
+                    Toast.makeText(getContext(), "Account saved successfully ",
+                            Toast.LENGTH_LONG).show();
+                    getFragmentManager().popBackStackImmediate();
+                }
             }
         });
 
@@ -128,9 +142,9 @@ public class AccountAddOrEditFragment extends Fragment implements AdapterView.On
     protected void loadSpinnerFolderData(){
 
         List<Folder> folderList = Folder.getAll();
-        ArrayAdapter<Folder> folderArrayAdapter =  new ArrayAdapter<Folder>(getContext(),
+        folderSpinnerAdapter =  new ArrayAdapter<Folder>(getContext(),
                 android.R.layout.simple_spinner_item, folderList);
-        spinnerFolder.setAdapter(folderArrayAdapter);
+        spinnerFolder.setAdapter(folderSpinnerAdapter);
     }
     protected void promptCreateFolder(){
         // get prompts.xml view
@@ -171,9 +185,7 @@ public class AccountAddOrEditFragment extends Fragment implements AdapterView.On
         alertDialog.show();
 
     }
-    protected void submitForm(){
-
-        Account account = new Account();
+    protected void hydrateAccount(Account account){
         account.setName(fldAccountName.getText().toString());
         account.setLogin(fldLogin.getText().toString());
         account.setEmail(fldEmail.getText().toString());
@@ -182,9 +194,39 @@ public class AccountAddOrEditFragment extends Fragment implements AdapterView.On
         account.setComment(fldComment.getText().toString());
         account.setIs_in_home(chkInHome.isChecked());
         account.setFolder(selectedFolder);
-        account.save();
-        Toast.makeText(getContext(), "Account saved succefully ",
-                Toast.LENGTH_LONG).show();
+    }
+    protected boolean validateAccountObject(Account account){
+        boolean valide = true;
+        if(account.getName().length()<1){
+            fldAccountName.setError(getContext().getString(R.string.error_account_name));
+            valide = false;
+        }
+        if(account.getLogin().length()<1){
+            fldLogin.setError(getContext().getString(R.string.error_account_login));
+            valide = false;
+        }
+        if(account.getEmail().length()<1){
+            fldEmail.setError(getContext().getString(R.string.error_account_email));
+            valide = false;
+        }
+        if(account.getPassword().length()<1 && account_id != 0){
+            fldPassword.setError(getContext().getString(R.string.error_account_password_null));
+            valide = false;
+        }else if(!fldRepeatPassword.getText().toString().equals(account.getPassword())){
+            fldPassword.setError(getContext().getString(R.string.error_account_password_matche));
+            valide = false;
+        }
+        return valide;
+    }
+    protected void fillComponents(Account account){
+        fldAccountName.setText(account.getName());
+        fldLogin.setText(account.getLogin());
+        fldEmail.setText(account.getEmail());
+        fldUrl.setText(account.getUrl());
+        fldComment.setText(account.getComment());
+        chkInHome.setChecked(account.getIs_in_home());
+        int spinnerPos = folderSpinnerAdapter.getPosition(account.getFolder());
+        spinnerFolder.setSelection(spinnerPos);
     }
 
     protected void createFolderAndReloadSpinner(String folderName){
@@ -194,29 +236,7 @@ public class AccountAddOrEditFragment extends Fragment implements AdapterView.On
         folder.save();
         loadSpinnerFolderData();
     }
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
 
 
     @Override
@@ -230,18 +250,5 @@ public class AccountAddOrEditFragment extends Fragment implements AdapterView.On
 
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
-    }
+
 }

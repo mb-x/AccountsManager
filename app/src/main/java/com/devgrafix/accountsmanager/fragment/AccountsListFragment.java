@@ -1,5 +1,7 @@
 package com.devgrafix.accountsmanager.fragment;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
@@ -15,6 +17,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.devgrafix.accountsmanager.Helper;
 import com.devgrafix.accountsmanager.adapter.AccountAdapter;
 import com.devgrafix.accountsmanager.model.Account;
 import com.devgrafix.accountsmanager.model.Folder;
@@ -110,14 +113,11 @@ public class AccountsListFragment extends Fragment {
         switch (menuItemId){
             case 0: //edit
                 Toast.makeText(getContext(),"Edit" +  selectedAccount.toString(), Toast.LENGTH_LONG).show();
-//                Intent nextIntent = new Intent(listPresonsActivity.this, editPersonActivity.class);
-//                nextIntent.putExtra("personId", selectedPerson.getId());
-//                nextIntent.putExtra("personName", selectedPerson.getPseudo());
-//                startActivityForResult(nextIntent, EDIT_PERSON_REQUEST);
+                Helper.switchToFragment(getFragmentManager(), AccountAddOrEditFragment.newInstance(selectedAccount.getId()));
                 break;
             case 1: //delete
                 Toast.makeText(getContext(),"Delete" +  selectedAccount.toString(), Toast.LENGTH_LONG).show();
-//                askConfirmationBeforeDelete(info.position).show();
+                askConfirmationBeforeDelete(info.position).show();
                 break;
             default:
                 break;
@@ -133,5 +133,33 @@ public class AccountsListFragment extends Fragment {
         return fragment;
     }
 
+    private AlertDialog askConfirmationBeforeDelete(final int position)
+    {
+        AlertDialog dialogBox =new AlertDialog.Builder(getContext())
+                //set message, title, and icon
+                .setTitle("Delete")
+                .setMessage("Are you sure you want to delete this item")
+                        //.setIcon(R.drawable.delete)
+                        //.setCancelable(true)
+                .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        //your deleting code
+
+                        selectedAccount.delete();
+                        accounts.remove(position);
+                        accountAdapter.notifyDataSetChanged();
+                        Toast.makeText(getContext(),selectedAccount.getName()+" is deleted successfully", Toast.LENGTH_LONG ).show();
+                        dialog.dismiss();
+                    }
+                })
+                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                })
+                .create();
+        return dialogBox;
+
+    }
 
 }
