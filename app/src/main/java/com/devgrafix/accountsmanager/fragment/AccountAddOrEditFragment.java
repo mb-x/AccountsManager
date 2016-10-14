@@ -189,7 +189,9 @@ public class AccountAddOrEditFragment extends Fragment implements AdapterView.On
         account.setName(fldAccountName.getText().toString());
         account.setLogin(fldLogin.getText().toString());
         account.setEmail(fldEmail.getText().toString());
-        account.setPassword(fldPassword.getText().toString());
+        if(account_id == 0 || (fldPassword.getText().toString().isEmpty() && account_id != 0)){
+            account.setPassword(fldPassword.getText().toString());
+        }
         account.setUrl(fldUrl.getText().toString());
         account.setComment(fldComment.getText().toString());
         account.setIs_in_home(chkInHome.isChecked());
@@ -209,10 +211,12 @@ public class AccountAddOrEditFragment extends Fragment implements AdapterView.On
             fldEmail.setError(getContext().getString(R.string.error_account_email));
             valide = false;
         }
-        if(account.getPassword().length()<1 && account_id != 0){
+        if(account.getPassword().length()<1 && account_id == 0){
             fldPassword.setError(getContext().getString(R.string.error_account_password_null));
             valide = false;
-        }else if(!fldRepeatPassword.getText().toString().equals(account.getPassword())){
+        }
+
+        if(!fldRepeatPassword.getText().toString().equals(account.getPassword())){
             fldPassword.setError(getContext().getString(R.string.error_account_password_matche));
             valide = false;
         }
