@@ -7,6 +7,7 @@ import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Select;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -18,7 +19,9 @@ public class Folder extends Model {
     @Column(name = "folder_name")
     protected String name;
     @Column(name = "folder_order")
-    protected int order;
+    protected int order = 0;
+    @Column(name = "created_at")
+    protected Date created_at;
 
     public Folder(){
 
@@ -44,6 +47,14 @@ public class Folder extends Model {
         this.order = order;
     }
 
+    public Date getCreated_at() {
+        return created_at;
+    }
+
+    public void setCreated_at(Date created_at) {
+        this.created_at = created_at;
+    }
+
     public String toString() {
         return name;
     }
@@ -54,7 +65,7 @@ public class Folder extends Model {
     public static List<Folder> getAll(){
         return new Select()
                 .from(Folder.class)
-                .orderBy("folder_name ASC")
+                .orderBy("folder_order ASC")
                 .execute();
     }
     public static Folder getOneById(long id){

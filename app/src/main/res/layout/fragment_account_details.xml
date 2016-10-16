@@ -1,0 +1,83 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    tools:context="com.devgrafix.accountsmanager.fragment.accountDetailsFragment">
+
+
+    <TextView
+        android:id="@+id/account_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/hello_blank_fragment"
+        android:textSize="30dp"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        android:layout_marginTop="15dp"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/account_login"
+        android:text="Login : "
+        android:textSize="24dp"
+        android:layout_marginTop="15dp"
+        android:layout_below="@+id/account_name"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/account_email"
+        android:text="Email : "
+        android:textSize="24dp"
+        android:layout_marginTop="15dp"
+        android:layout_below="@+id/account_login"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/account_url"
+        android:text="Url : "
+        android:textSize="24dp"
+        android:layout_marginTop="15dp"
+        android:layout_below="@+id/account_email"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/account_created_at"
+        android:text="Created At : "
+        android:textSize="24dp"
+        android:layout_marginTop="15dp"
+        android:layout_below="@+id/account_url"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/account_updated_at"
+        android:text="Updated At : "
+        android:textSize="24dp"
+        android:layout_marginTop="15dp"
+        android:layout_below="@+id/account_created_at"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/account_comment_title"
+        android:text="Comment : "
+        android:textSize="24dp"
+        android:layout_marginTop="15dp"
+        android:layout_below="@+id/account_updated_at"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/account_comment"
+        android:text=""
+        android:textSize="22dp"
+        android:layout_marginTop="5dp"
+        android:layout_below="@+id/account_comment_title"
+        />
+
+</RelativeLayout>

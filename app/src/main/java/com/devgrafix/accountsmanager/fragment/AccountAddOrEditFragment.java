@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,6 +24,8 @@ import com.devgrafix.accountsmanager.R;
 import com.devgrafix.accountsmanager.model.Account;
 import com.devgrafix.accountsmanager.model.Folder;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -33,13 +36,15 @@ import java.util.List;
  * create an instance of this fragment.
  */
 public class AccountAddOrEditFragment extends Fragment implements AdapterView.OnItemSelectedListener {
-    // TODO: Rename parameter arguments, choose names that match
+
+    private static final String TAG = "AccountAddOrEdit";
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_ACCOUNT_ID = "ARG_ACCOUNT_ID ";
 
     // TODO: Rename and change types of parameters
     private Long account_id = null;
 
+    protected boolean isNew = true;
     protected View rootView;
     protected Folder selectedFolder = null;
     protected Spinner spinnerFolder;
@@ -62,7 +67,6 @@ public class AccountAddOrEditFragment extends Fragment implements AdapterView.On
      *
      * @return A new instance of fragment AccountAddOrEditFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static AccountAddOrEditFragment newInstance(long param_account_id) {
         AccountAddOrEditFragment fragment = new AccountAddOrEditFragment();
         Bundle args = new Bundle();
@@ -78,6 +82,7 @@ public class AccountAddOrEditFragment extends Fragment implements AdapterView.On
             account_id = getArguments().getLong(ARG_ACCOUNT_ID);
             if(account_id > 0) {
                 account = Account.getOneById(account_id);
+                isNew = false;
             }
         }
     }
@@ -87,8 +92,9 @@ public class AccountAddOrEditFragment extends Fragment implements AdapterView.On
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_account_add_or_edit, container, false);
         initViews();
+        initEvents();
         loadSpinnerFolderData();
-        if(account != null) {
+        if(!isNew) {
             fillComponents(account);
         }
         return rootView;
@@ -112,14 +118,23 @@ public class AccountAddOrEditFragment extends Fragment implements AdapterView.On
 
         /* Buttons */
         btnSubmit = (Button)rootView.findViewById(R.id.btn_submit_add_entry);
+
+
+        btnAddFolder = (Button)rootView.findViewById(R.id.btn_add_folder);
+
+    }
+    protected void initEvents(){
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(account_id == null || account_id == 0 || account == null){
+                if(isNew){
                     account = new Account();
+                    Calendar calendar = Calendar.getInstance();
+                    account.setCreated_at(new Date());
                 }
                 hydrateAccount(account);
                 if(validateAccountObject(account)) {
+                    account.setUpdated_at(new Date());
                     account.save();
                     Toast.makeText(getContext(), "Account saved successfully ",
                             Toast.LENGTH_LONG).show();
@@ -127,8 +142,6 @@ public class AccountAddOrEditFragment extends Fragment implements AdapterView.On
                 }
             }
         });
-
-        btnAddFolder = (Button)rootView.findViewById(R.id.btn_add_folder);
         btnAddFolder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -189,7 +202,7 @@ public class AccountAddOrEditFragment extends Fragment implements AdapterView.On
         account.setName(fldAccountName.getText().toString());
         account.setLogin(fldLogin.getText().toString());
         account.setEmail(fldEmail.getText().toString());
-        if(account_id == 0 || (fldPassword.getText().toString().isEmpty() && account_id != 0)){
+        if(isNew || (fldPassword.getText().toString().isEmpty() && !isNew)){
             account.setPassword(fldPassword.getText().toString());
         }
         account.setUrl(fldUrl.getText().toString());
@@ -211,7 +224,7 @@ public class AccountAddOrEditFragment extends Fragment implements AdapterView.On
             fldEmail.setError(getContext().getString(R.string.error_account_email));
             valide = false;
         }
-        if(account.getPassword().length()<1 && account_id == 0){
+        if(account.getPassword().length()<1 && isNew){
             fldPassword.setError(getContext().getString(R.string.error_account_password_null));
             valide = false;
         }

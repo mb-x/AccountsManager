@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.devgrafix.accountsmanager.Helper;
 import com.devgrafix.accountsmanager.R;
 import com.devgrafix.accountsmanager.model.Account;
 
@@ -28,10 +29,12 @@ public class AccountAdapter extends ArrayAdapter<Account> {
         if(personViewHolder == null){
             personViewHolder = new AccountViewHolder();
             personViewHolder.accountName = (TextView) convertView.findViewById(R.id.account_name);
+            personViewHolder.createdAt = (TextView) convertView.findViewById(R.id.created_at);
             convertView.setTag(personViewHolder);
         }
         Account account = getItem(position);
         personViewHolder.accountName.setText(account.getName());
+        personViewHolder.createdAt.setText(account.getCreated_at()!= null? Helper.getFormatedDateTime(account.getCreated_at()):"");
         return convertView;
     }
 

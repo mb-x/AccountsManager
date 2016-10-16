@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp"
-    >
+    android:padding="10dp">
     <ImageView
         android:id="@+id/account_icon"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:src="@drawable/ic_menu_manage"
+        app:ico_icon="faw_user"
         />
 
     <TextView
@@ -38,7 +38,9 @@
         tools:text="30-09-2016"
         android:layout_alignTop="@+id/textView2"
         android:layout_toRightOf="@+id/account_name"
-        android:layout_toEndOf="@+id/account_name" />
+        android:layout_alignParentRight="true"
+        android:textAlignment="textEnd"
+        android:gravity="end" />
 
     <EditText
         android:layout_width="wrap_content"

@@ -28,7 +28,7 @@ import java.util.List;
 /**
  * Created by sbxramses on 17/04/16.
  */
-public class AccountsListFragment extends Fragment {
+public class AccountsListFragment extends Fragment implements  AdapterView.OnItemClickListener{
 
     public static final String FOLDER_KEY = "folder_id";
     public static final String IS_HOME_KEY = "home";
@@ -61,6 +61,7 @@ public class AccountsListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.accounts_list_fragment, container, false);
         initViews();
+        initEvents();
         return view;
     }
 
@@ -69,9 +70,8 @@ public class AccountsListFragment extends Fragment {
         txtFolderName.setText(folder.getName());
         accounListView = (ListView) view.findViewById(R.id.accountListView);
     }
-
-    protected void doHome(){
-
+    protected void initEvents(){
+        accounListView.setOnItemClickListener(this);
     }
 
 
@@ -162,4 +162,8 @@ public class AccountsListFragment extends Fragment {
 
     }
 
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Helper.switchToFragment(getFragmentManager(), accountDetailsFragment.newInstance(accounts.get(position).getId()));
+    }
 }

@@ -2,8 +2,9 @@ package com.devgrafix.accountsmanager.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
+import com.github.clans.fab.FloatingActionButton;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.LayoutInflaterCompat;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -19,7 +20,12 @@ import com.devgrafix.accountsmanager.fragment.AccountAddOrEditFragment;
 import com.devgrafix.accountsmanager.model.Folder;
 import com.devgrafix.accountsmanager.fragment.AccountsListFragment;
 import com.devgrafix.accountsmanager.R;
+import com.github.clans.fab.FloatingActionMenu;
+import com.mikepenz.fontawesome_typeface_library.FontAwesome;
+import com.mikepenz.iconics.IconicsDrawable;
+import com.mikepenz.iconics.context.IconicsLayoutInflater;
 
+import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity
@@ -28,23 +34,36 @@ public class MainActivity extends AppCompatActivity
     private Toolbar toolbar;
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
+    protected FloatingActionButton fabCreateAccount;
+    protected FloatingActionButton fabCreateFolder;
+    protected FloatingActionMenu fabMenu;
+    public List<Folder> folders;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        LayoutInflaterCompat.setFactory(getLayoutInflater(), new IconicsLayoutInflater(getDelegate()));
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //********************** Initializing Toolbar and setting it as the actionbar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        fabMenu = (FloatingActionMenu) findViewById(R.id.fab_menu);
         // ***************** Initializing FloatingActionButton
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        fabCreateAccount = (FloatingActionButton) findViewById(R.id.fab_add_account);
+        fabCreateAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Helper.switchToFragment(getSupportFragmentManager(), AccountAddOrEditFragment.newInstance(0));
+                fabMenu.close(true);
             }
         });
-
+        fabCreateFolder = (FloatingActionButton) findViewById(R.id.fab_add_folder);
+        fabCreateFolder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                fabMenu.close(true);
+            }
+        });
         // Initializing Drawer Layout and ActionBarToggle
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -56,16 +75,25 @@ public class MainActivity extends AppCompatActivity
 
 
         setUpNavigationView();
-
+        Helper.switchToFragment(getSupportFragmentManager(), AccountsListFragment.newInstance(folders.get(0).getId()));
     }
     protected void setUpNavigationView(){
         //Initializing NavigationView
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         Menu menu = navigationView.getMenu();
-
-        List<Folder> categories = Folder.getAll();
-        for(Folder folder : categories){
-            menu.add(0,  folder.getId().intValue(), folder.getOrder(), folder.getName());
+        IconicsDrawable iconicsDrawable = new IconicsDrawable(getApplicationContext()).icon(FontAwesome.Icon.faw_folder);
+        folders = Folder.getAll();
+        if(folders.size()== 0){
+            Folder folder = new Folder();
+            folder.setName("Default");
+            folder.setCreated_at(new Date());
+            folder.save();
+            folders.add(folder);
+        }
+        for(Folder folder : folders){
+            menu.add(0,  folder.getId().intValue(), folder.getOrder(), folder.getName())
+                    .setIcon(iconicsDrawable)
+                    ;
         }
 
         //menu.add(0,99, 1,"Test").setIcon(R.drawable.ic_menu_slideshow);
