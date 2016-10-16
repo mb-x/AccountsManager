@@ -38,7 +38,7 @@
         fab:menu_shadowXOffset="1dp"
         fab:menu_shadowYOffset="2dp"
         fab:menu_colorNormal="@color/colorPrimary"
-        fab:menu_colorPressed="@color/colorPrimaryDark"
+        fab:menu_colorPressed="@color/colorAccent"
         fab:menu_colorRipple="@color/colorAccent"
         fab:menu_animationDelayPerItem="50"
         fab:menu_icon="@drawable/fab_add"
@@ -70,7 +70,8 @@
             android:id="@+id/fab_add_account"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="{faw-user}"
+            android:src="@drawable/ic_https_24dp"
+            fab:fab_colorPressed="@color/colorAccent"
             fab:fab_colorNormal="@color/colorPrimary"
             fab:fab_size="mini"
             fab:fab_label="Create Account" />
@@ -78,7 +79,8 @@
             android:id="@+id/fab_add_folder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="{faw-folder}"
+            android:src="@drawable/ic_folder_24dp"
+            fab:fab_colorPressed="@color/colorAccent"
             fab:fab_colorNormal="@color/colorPrimary"
             fab:fab_size="mini"
             fab:fab_label="Create Folder" />
