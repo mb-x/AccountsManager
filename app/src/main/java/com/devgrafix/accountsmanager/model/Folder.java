@@ -18,10 +18,27 @@ public class Folder extends Model {
 
     @Column(name = "folder_name")
     protected String name;
+
+    @Column(name = "folder_description")
+    protected String description;
+
+    @Column(name = "folder_icon")
+    protected String icon;
+
+    @Column(name = "foreground_colour")
+    protected String foregroundColour;
+
+    @Column(name = "background_colour")
+    protected String backgroundColour;
+
     @Column(name = "folder_order")
     protected int order = 0;
+
     @Column(name = "created_at")
     protected Date created_at;
+
+    @Column(name = "updated_at")
+    protected Date updated_at;
 
     public Folder(){
 
@@ -31,6 +48,47 @@ public class Folder extends Model {
         this.name = name;
         this.order = order;
     }
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+
+    public String getForegroundColour() {
+        return foregroundColour;
+    }
+
+    public void setForegroundColour(String foregroundColour) {
+        this.foregroundColour = foregroundColour;
+    }
+
+    public String getBackgroundColour() {
+        return backgroundColour;
+    }
+
+    public void setBackgroundColour(String backgroundColour) {
+        this.backgroundColour = backgroundColour;
+    }
+
+    public Date getUpdated_at() {
+        return updated_at;
+    }
+
+    public void setUpdated_at(Date updated_at) {
+        this.updated_at = updated_at;
+    }
+
+
     public String getName() {
         return this.name;
     }

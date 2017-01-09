@@ -17,36 +17,47 @@ public class Account extends Model {
     /* Begin Variables */
     @Column(name = "name")
     protected String name ;
+
     @Column(name = "url")
     protected String url;
+
     @Column(name = "login")
     protected String login;
+
     @Column(name = "email")
     protected String email;
+
     @Column(name = "password")
     protected String password;
-    @Column(name = "comment")
-    protected String comment;
-    @Column(name = "is_in_home")
-    protected Boolean is_in_home;
+
+    @Column(name = "description")
+    protected String description;
+
+    @Column(name = "foreground_colour")
+    protected String foreground_colour;
+
+    @Column(name = "background_colour")
+    protected String background_colour;
+
+    @Column(name = "is_favorite")
+    protected Boolean isFavorite;
+
+    @Column(name = "list_order")
+    protected int order = 0;
+
     @Column(name = "created_at")
     protected Date created_at;
+
     @Column(name = "updated_at")
     protected Date updated_at;
-    @Column(name = "folder")
+
+    @Column(name = "folder_id")
     protected Folder folder;
+
     /* End Variables */
 
     public Account(){}
-    public Account(String name, String url, String login, String email, String password, String comment, Boolean is_in_home) {
-        this.name = name;
-        this.url = url;
-        this.login = login;
-        this.email = email;
-        this.password = password;
-        this.comment = comment;
-        this.is_in_home = is_in_home;
-    }
+
 
     @Override
     public String toString() {
@@ -93,20 +104,44 @@ public class Account extends Model {
         this.password = password;
     }
 
-    public String getComment() {
-        return comment;
+    public String getDescription() {
+        return description;
     }
 
-    public void setComment(String comment) {
-        this.comment = comment;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public Boolean getIs_in_home() {
-        return is_in_home;
+    public String getForeground_colour() {
+        return foreground_colour;
     }
 
-    public void setIs_in_home(Boolean is_in_home) {
-        this.is_in_home = is_in_home;
+    public void setForeground_colour(String foreground_colour) {
+        this.foreground_colour = foreground_colour;
+    }
+
+    public String getBackground_colour() {
+        return background_colour;
+    }
+
+    public void setBackground_colour(String background_colour) {
+        this.background_colour = background_colour;
+    }
+
+    public Boolean getIsFavorite() {
+        return isFavorite;
+    }
+
+    public void setIsFavorite(Boolean isFavorite) {
+        this.isFavorite = isFavorite;
+    }
+
+    public int getOrder() {
+        return order;
+    }
+
+    public void setOrder(int order) {
+        this.order = order;
     }
 
     public Date getCreated_at() {
@@ -133,7 +168,6 @@ public class Account extends Model {
         this.folder = folder;
     }
 
-
     /** *****************************
      * SQLITE METHODES
      ********************************** */
@@ -152,7 +186,7 @@ public class Account extends Model {
     public static List<Account> findByFolder(long folder_id){
         return new Select()
                 .from(Account.class)
-                .where("folder = ?", folder_id)
+                .where("folder_id = ?", folder_id)
                 .orderBy("name ASC")
                 .execute();
     }
