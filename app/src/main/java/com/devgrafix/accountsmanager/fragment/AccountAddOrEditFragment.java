@@ -206,8 +206,8 @@ public class AccountAddOrEditFragment extends Fragment implements AdapterView.On
             account.setPassword(fldPassword.getText().toString());
         }
         account.setUrl(fldUrl.getText().toString());
-        account.setComment(fldComment.getText().toString());
-        account.setIs_in_home(chkInHome.isChecked());
+        account.setDescription(fldComment.getText().toString());
+        account.setIsFavorite(chkInHome.isChecked());
         account.setFolder(selectedFolder);
     }
     protected boolean validateAccountObject(Account account){
@@ -240,8 +240,8 @@ public class AccountAddOrEditFragment extends Fragment implements AdapterView.On
         fldLogin.setText(account.getLogin());
         fldEmail.setText(account.getEmail());
         fldUrl.setText(account.getUrl());
-        fldComment.setText(account.getComment());
-        chkInHome.setChecked(account.getIs_in_home());
+        fldComment.setText(account.getDescription());
+        chkInHome.setChecked(account.getIsFavorite());
         int spinnerPos = folderSpinnerAdapter.getPosition(account.getFolder());
         spinnerFolder.setSelection(spinnerPos);
     }

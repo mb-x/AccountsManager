@@ -114,8 +114,8 @@ public class AccountManager extends EntityManager {
             contentValues.put(EMAIL, entity.getEmail());
             contentValues.put(URL, entity.getUrl());
             contentValues.put(PASSWORD, entity.getPassword());
-            contentValues.put(COMMENT, entity.getComment());
-            contentValues.put(IS_IN_HOME, entity.getIs_in_home());
+            contentValues.put(COMMENT, entity.getDescription());
+            contentValues.put(IS_IN_HOME, entity.getIsFavorite());
             contentValues.put(CREATED_AT, dateFormat.format(new Date()));
             contentValues.put(FOLDER, entity.getFolder().getId());
             insertId = database.insert(TABLE_NAME, null, contentValues);
@@ -174,8 +174,8 @@ public class AccountManager extends EntityManager {
         account.setEmail(c.getString(c.getColumnIndex(EMAIL)));
         account.setPassword(c.getString(c.getColumnIndex(PASSWORD)));
         account.setUrl(c.getString(c.getColumnIndex(URL)));
-        account.setComment(c.getString(c.getColumnIndex(COMMENT)));
-        account.setIs_in_home((c.getInt(c.getColumnIndex(IS_IN_HOME))==0? false : true));
+        account.setDescription(c.getString(c.getColumnIndex(COMMENT)));
+        account.setIsFavorite((c.getInt(c.getColumnIndex(IS_IN_HOME))==0? false : true));
         return account;
     }
 

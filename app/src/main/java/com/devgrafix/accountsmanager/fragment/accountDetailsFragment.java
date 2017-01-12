@@ -86,7 +86,7 @@ public class accountDetailsFragment extends Fragment {
         accountLogin.setText(accountLogin.getText()+account.getLogin());
         accountEmail.setText(accountEmail.getText()+account.getEmail());
         accountUrl.setText(accountUrl.getText()+account.getUrl());
-        accountComment.setText(accountComment.getText()+account.getComment());
+        accountComment.setText(accountComment.getText()+account.getDescription());
         if(account.getCreated_at()!= null){
             createdAt.setText(createdAt.getText()+ Helper.getFormatedDateTime(account.getCreated_at()));
         }
