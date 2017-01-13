@@ -61,6 +61,8 @@ public class MainActivity extends AppCompatActivity
         fabCreateFolder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent folderListIntent = new Intent(MainActivity.this, ListFolderActivity.class);
+                startActivity(folderListIntent);
                 fabMenu.close(true);
             }
         });

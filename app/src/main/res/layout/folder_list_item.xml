@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="90dp"
+    android:elevation="4dp"
+    android:layout_margin="10dp"
+    app:cardCornerRadius="4dp"
+    >
+    <android.support.v7.widget.AppCompatImageView
+        android:layout_width="100dp"
+        android:layout_height="80dp" />
+    <TextView
+        android:id="@+id/folder_item_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="110dp"
+        android:textSize="18dp"
+        android:text="Account Name"/>
+    <TextView
+        android:id="@+id/folder_item_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="110dp"
+        android:layout_marginTop="28dp"
+        android:textSize="14dp"
+        android:text="account@gmail.com"/>
+</android.support.v7.widget.CardView>
